@@ -8,6 +8,7 @@ import { collect as collectDocker } from "./collectors/docker.js";
 import { collect as collectDevServers } from "./collectors/devservers.js";
 import { collect as collectSystem } from "./collectors/system.js";
 import { collect as collectSkills } from "./collectors/skills.js";
+import { collect as collectSessions } from "./collectors/sessions.js";
 
 // Allow self-signed certs for Portainer/UniFi
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -77,7 +78,7 @@ async function refreshCache() {
   if (refreshing) return;
   refreshing = true;
   try {
-    const [botCore, services, communication, containers, devServers, system, crons, skills] =
+    const [botCore, services, communication, containers, devServers, system, crons, skills, sessions] =
       await Promise.all([
         collectCore(config),
         collectServices(config),
@@ -87,6 +88,7 @@ async function refreshCache() {
         collectSystem(config),
         getCronJobs(),
         collectSkills(config),
+        collectSessions(config),
       ]);
 
     cachedStatus = {
@@ -99,6 +101,7 @@ async function refreshCache() {
       devServers,
       system,
       skills,
+      sessions,
     };
   } catch (e) {
     console.error(`[bot-status] Refresh error: ${e.message}`);
