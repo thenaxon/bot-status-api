@@ -32,7 +32,7 @@ export async function collect(config) {
     const spawns = [];
 
     for (const [key, data] of entries) {
-      if (key.includes(":spawn:") || key.startsWith("spawn:")) {
+      if (key.includes(":spawn:") || key.includes(":subagent:") || key.startsWith("spawn:")) {
         spawn++;
         spawns.push({
           key,
